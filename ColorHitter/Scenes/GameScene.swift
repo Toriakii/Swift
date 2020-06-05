@@ -95,7 +95,6 @@ class GameScene: SKScene {
     }
     
     func gameOver(){
-        print("You lost...")
         UserDefaults.standard.set(score, forKey: "RecentScore")
         
         if score > UserDefaults.standard.integer(forKey: "Highscore"){ // If there is no value, returns 0
@@ -119,11 +118,9 @@ extension GameScene: SKPhysicsContactDelegate{
         let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         
         if contactMask == PhysicsCategories.ballCategory | PhysicsCategories.switchCategory{ // Contact between the ball and the color switch
-            print("Hit!")
             // Check if the body is the ball and assign it to the constant ball
             if let ball = contact.bodyA.node?.name == "Ball" ? contact.bodyA.node as? SKSpriteNode : contact.bodyB.node as? SKSpriteNode{
                 if currentColorIndex == switchState.rawValue{
-                    print("Correct color")
                     score += 1
                     updateScore()
                     ball.run(SKAction.fadeOut(withDuration: 0.25), completion: {
