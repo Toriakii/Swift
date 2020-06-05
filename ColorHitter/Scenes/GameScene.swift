@@ -13,7 +13,13 @@ class GameScene: SKScene {
     var colorSwitch : SKSpriteNode!
     
     override func didMove(to view: SKView) {
+        setupPhysics()
         layoutScene()
+    }
+    
+    func setupPhysics(){
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: -2.0) // Slows the gravity from regular (-9,8) to -2,0
+        physicsWorld.contactDelegate = self
     }
     
     func layoutScene(){
@@ -41,5 +47,18 @@ class GameScene: SKScene {
         ball.physicsBody?.collisionBitMask = PhysicsCategories.none
         
         addChild(ball)
+    }
+}
+
+extension GameScene: SKPhysicsContactDelegate{
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        // Since the bit masks are something like 01 and 10, their sum will be 11
+        
+        let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        
+        if contactMask == PhysicsCategories.ballCategory | PhysicsCategories.switchCategory{ // Contact between the ball and the color switch
+            print("Hit!")
+        }
     }
 }

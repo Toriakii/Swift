@@ -3,4 +3,5 @@
 * [x] Overall project organization
 * [x] Assets added
 * [x] Color circle and ball are spawned
-ª [x] Physics added!
+* [x] Physics added!
+* [x] Interaction between ball and switcher is done!
