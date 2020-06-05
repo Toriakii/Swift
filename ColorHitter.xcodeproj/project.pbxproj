@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C443EDA6248A5158001B2115 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C443EDA5248A5158001B2115 /* Settings.swift */; };
 		C4FA0C64248A4708002EFC1E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FA0C63248A4708002EFC1E /* AppDelegate.swift */; };
 		C4FA0C6A248A4708002EFC1E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FA0C69248A4708002EFC1E /* GameScene.swift */; };
 		C4FA0C6C248A4708002EFC1E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FA0C6B248A4708002EFC1E /* GameViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C443EDA5248A5158001B2115 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		C4FA0C60248A4708002EFC1E /* ColorHitter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColorHitter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4FA0C63248A4708002EFC1E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4FA0C69248A4708002EFC1E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				C4FA0C63248A4708002EFC1E /* AppDelegate.swift */,
+				C443EDA5248A5158001B2115 /* Settings.swift */,
 			);
 			path = Template;
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 			files = (
 				C4FA0C6A248A4708002EFC1E /* GameScene.swift in Sources */,
 				C4FA0C6C248A4708002EFC1E /* GameViewController.swift in Sources */,
+				C443EDA6248A5158001B2115 /* Settings.swift in Sources */,
 				C4FA0C64248A4708002EFC1E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
