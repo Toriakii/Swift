@@ -46,6 +46,7 @@ class GameScene: SKScene {
         colorSwitch = SKSpriteNode(imageNamed: "ColorCircle")
         colorSwitch.size = CGSize(width: frame.size.width/3, height: frame.size.width/3)
         colorSwitch.position = CGPoint(x: frame.midX, y: frame.minY + colorSwitch.size.height)
+        colorSwitch.zPosition = ZPositions.colorSwitch
         colorSwitch.physicsBody = SKPhysicsBody(circleOfRadius: colorSwitch.size.width/2)
         colorSwitch.physicsBody?.categoryBitMask = PhysicsCategories.switchCategory
         colorSwitch.physicsBody?.isDynamic = false // The color switch is no longer affected by physics!! :)))
@@ -54,8 +55,16 @@ class GameScene: SKScene {
         
         scoreLabel.fontName = "AvenirNext-Bold"
         scoreLabel.fontSize = 60.0
+        scoreLabel.fontColor = UIColor.white
+        scoreLabel.position = CGPoint(x: frame.midX, y: frame.midY)
+        scoreLabel.zPosition = ZPositions.label
+        addChild(scoreLabel)
         
         spawnBall()
+    }
+    
+    func updateScore(){
+        scoreLabel.text = "\(score)"
     }
     
     func spawnBall(){
@@ -65,6 +74,7 @@ class GameScene: SKScene {
         ball.colorBlendFactor = 1.0 // Assigns the color value to the texture
         ball.name = "Ball"
         ball.position = CGPoint(x: frame.midX, y: frame.maxY)
+        ball.zPosition = ZPositions.ball
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width/2) // Half the ball's diameter
         ball.physicsBody?.categoryBitMask = PhysicsCategories.ballCategory
         ball.physicsBody?.contactTestBitMask = PhysicsCategories.switchCategory
@@ -86,6 +96,14 @@ class GameScene: SKScene {
     
     func gameOver(){
         print("You lost...")
+        UserDefaults.standard.set(score, forKey: "RecentScore")
+        
+        if score > UserDefaults.standard.integer(forKey: "Highscore"){ // If there is no value, returns 0
+            UserDefaults.standard.set(score, forKey: "Highscore")
+        }
+        
+        let menuScene = MenuScene(size: view!.bounds.size)
+        view?.presentScene(menuScene)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -106,6 +124,8 @@ extension GameScene: SKPhysicsContactDelegate{
             if let ball = contact.bodyA.node?.name == "Ball" ? contact.bodyA.node as? SKSpriteNode : contact.bodyB.node as? SKSpriteNode{
                 if currentColorIndex == switchState.rawValue{
                     print("Correct color")
+                    score += 1
+                    updateScore()
                     ball.run(SKAction.fadeOut(withDuration: 0.25), completion: {
                         // Remove old ball
                         ball.removeFromParent()
