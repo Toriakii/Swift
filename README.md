@@ -1,2 +1,5 @@
 # Projeto Final de Swift
-* [X] Clean base project
+* [x] Clean base project
+* [x] Overall project organization
+* [x] Assets added
+* [x] Color circle and ball are spawned
