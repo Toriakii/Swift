@@ -24,6 +24,7 @@ class GameScene: SKScene {
         colorSwitch.position = CGPoint(x: frame.midX, y: frame.minY + colorSwitch.size.height)
         colorSwitch.physicsBody = SKPhysicsBody(circleOfRadius: colorSwitch.size.width/2)
         colorSwitch.physicsBody?.categoryBitMask = PhysicsCategories.switchCategory
+        colorSwitch.physicsBody?.isDynamic = false // The color switch is no longer affected by physics!! :)))
         
         addChild(colorSwitch)
         
