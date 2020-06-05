@@ -8,7 +8,8 @@
     * [x] Contact
     * [x] Remove previous ball
     * [x] Respawn ball if color is correct
-    * [ ] Lose if color doesn't match the ball's color
+    * [ ] Lose if the color doesn't match the ball's color
+    * [ ] Score
 * [ ] End game
     * [ ] Win
     * [ ] Lose

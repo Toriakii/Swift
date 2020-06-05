@@ -27,6 +27,9 @@ class GameScene: SKScene {
     var switchState = SwitchState.red // the red is @ the image top
     var currentColorIndex: Int?
     
+    let scoreLabel = SKLabelNode(text: "0")
+    var score = 0
+    
     override func didMove(to view: SKView) {
         setupPhysics()
         layoutScene()
@@ -48,6 +51,9 @@ class GameScene: SKScene {
         colorSwitch.physicsBody?.isDynamic = false // The color switch is no longer affected by physics!! :)))
         
         addChild(colorSwitch)
+        
+        scoreLabel.fontName = "AvenirNext-Bold"
+        scoreLabel.fontSize = 60.0
         
         spawnBall()
     }
@@ -100,12 +106,12 @@ extension GameScene: SKPhysicsContactDelegate{
             if let ball = contact.bodyA.node?.name == "Ball" ? contact.bodyA.node as? SKSpriteNode : contact.bodyB.node as? SKSpriteNode{
                 if currentColorIndex == switchState.rawValue{
                     print("Correct color")
-                    // Remove old ball
                     ball.run(SKAction.fadeOut(withDuration: 0.25), completion: {
+                        // Remove old ball
                         ball.removeFromParent()
+                        // Spawn new ball
                         self.spawnBall()
                     })
-                    // Spawn new ball
                 }else{
                     gameOver()
                 }
