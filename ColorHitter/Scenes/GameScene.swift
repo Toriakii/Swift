@@ -8,9 +8,24 @@
 
 import SpriteKit
 
+enum GameColors{
+    static let colors = [
+        UIColor.init(red: 231/255, green: 76/255, blue: 60/255, alpha: 1.0),
+        UIColor.init(red: 241/255, green: 146/255, blue: 15/255, alpha: 1.0),
+        UIColor.init(red: 46/255, green: 204/255, blue: 113/255, alpha: 1.0),
+        UIColor.init(red: 52/255, green: 152/255, blue: 219/255, alpha: 1.0)
+    ]
+}
+
+enum SwitchState: Int{
+    case red, yellow, green, blue // Since none is specified, we just get the raw values [0-3]
+}
+
 class GameScene: SKScene {
         
     var colorSwitch : SKSpriteNode!
+    var switchState = SwitchState.red // the red is @ the image top
+    var currentColorIndex: Int?
     
     override func didMove(to view: SKView) {
         setupPhysics()
@@ -38,8 +53,11 @@ class GameScene: SKScene {
     }
     
     func spawnBall(){
-        let ball = SKSpriteNode(imageNamed: "ball")
-        ball.size = CGSize(width: 30.0, height: 30.0)
+        currentColorIndex = Int(arc4random_uniform(UInt32(4))) // Create a random number between 0 and 3
+        
+        let ball = SKSpriteNode(texture: SKTexture(imageNamed: "ball"), color: GameColors.colors[currentColorIndex!], size: CGSize(width: 30.0, height: 30.0))
+        ball.colorBlendFactor = 1.0 // Assigns the color value to the texture
+        ball.name = "Ball"
         ball.position = CGPoint(x: frame.midX, y: frame.maxY)
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width/2) // Half the ball's diameter
         ball.physicsBody?.categoryBitMask = PhysicsCategories.ballCategory
@@ -47,6 +65,25 @@ class GameScene: SKScene {
         ball.physicsBody?.collisionBitMask = PhysicsCategories.none
         
         addChild(ball)
+    }
+    
+    func rotateSwitch(){
+        // Preventing switch to go any higher than the max value
+        if let newState = SwitchState(rawValue: switchState.rawValue + 1){
+            switchState = newState
+        } else {
+            switchState = .red
+        }
+        
+        colorSwitch.run(SKAction.rotate(byAngle: .pi/2, duration: 0.25))
+    }
+    
+    func gameOver(){
+        print("You lost...")
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        rotateSwitch()
     }
 }
 
@@ -59,6 +96,20 @@ extension GameScene: SKPhysicsContactDelegate{
         
         if contactMask == PhysicsCategories.ballCategory | PhysicsCategories.switchCategory{ // Contact between the ball and the color switch
             print("Hit!")
+            // Check if the body is the ball and assign it to the constant ball
+            if let ball = contact.bodyA.node?.name == "Ball" ? contact.bodyA.node as? SKSpriteNode : contact.bodyB.node as? SKSpriteNode{
+                if currentColorIndex == switchState.rawValue{
+                    print("Correct color")
+                    // Remove old ball
+                    ball.run(SKAction.fadeOut(withDuration: 0.25), completion: {
+                        ball.removeFromParent()
+                        self.spawnBall()
+                    })
+                    // Spawn new ball
+                }else{
+                    gameOver()
+                }
+            }
         }
     }
 }
